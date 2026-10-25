@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5434/orders
+    username: order
+    password: order
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+management:
+  endpoint:
+    health:
+      show-details: always

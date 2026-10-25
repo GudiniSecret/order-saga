@@ -1,0 +1,19 @@
+services:
+  order-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: order
+      POSTGRES_PASSWORD: order
+    ports:
+      - "5434:5432"
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U order -d orders"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  order-db-data:
