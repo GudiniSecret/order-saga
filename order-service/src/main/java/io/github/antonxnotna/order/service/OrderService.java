@@ -1,0 +1,33 @@
+package io.github.antonxnotna.order.service;
+
+import io.github.antonxnotna.order.domain.Order;
+import io.github.antonxnotna.order.dto.CreateOrderRequest;
+import io.github.antonxnotna.order.dto.OrderItemRequest;
+import io.github.antonxnotna.order.dto.OrderResponse;
+import io.github.antonxnotna.order.repository.OrderRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.time.Clock;
+
+@Service
+public class OrderService {
+    private final OrderRepository orderRepository;
+    private final Clock clock;
+
+    // Autowired не нужен, конструктор один
+    public OrderService(OrderRepository orderRepository, Clock clock) {
+        this.orderRepository = orderRepository;
+        this.clock = clock;
+    }
+
+    @Transactional
+    public OrderResponse createOrder(CreateOrderRequest request) {
+        Order order = new Order(request.customerId(), clock.instant());
+        for (OrderItemRequest item : request.items()) {
+            order.addItem(item.productId(), item.quantity(), item.price());
+        }
+        Order saved = orderRepository.save(order);
+        return OrderResponse.from(saved);
+    }
+}

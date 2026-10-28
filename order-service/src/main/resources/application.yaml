@@ -1,16 +1,27 @@
 spring:
+  # Общие параметры приложения
   application:
     name: order-service
+
+  # Настройки подключения к БД
   datasource:
     url: jdbc:postgresql://localhost:5434/orders
     username: order
     password: order
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: validate
 
+  # Настройка работы с ORM
+  jpa:
+    open-in-view: false # Закрывает подключение к БД по завершении транзакции, не ожидая веб-ответа от БД
+    hibernate:
+      ddl-auto: validate # validate - Hibernate только проверяет соответствие Java-сущностей с структурой БД
+
+# Мониторинг и метрики
 management:
   endpoint:
     health:
-      show-details: always
+      show-details: always # Настраивает эндпойнт проверки приложения. Always - всегда показывать подробную инфу о состоянии системы
+
+# Логирование, чтобы видеть, какие SQL запросы делает Hibernate
+logging:
+  level:
+    org.hibernate.SQL: debug
