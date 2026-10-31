@@ -15,6 +15,13 @@ spring:
     hibernate:
       ddl-auto: validate # validate - Hibernate только проверяет соответствие Java-сущностей с структурой БД
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all # ответ записано только после подтверждения от всех in-sync реплик
+
 # Мониторинг и метрики
 management:
   endpoint:

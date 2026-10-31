@@ -5,6 +5,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.kafka.KafkaContainer;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
@@ -15,4 +16,9 @@ public class TestcontainersConfiguration {
 		return new PostgreSQLContainer(DockerImageName.parse("postgres:16"));
 	}
 
+	@Bean
+	@ServiceConnection
+	KafkaContainer kafkaContainer() {
+		return new KafkaContainer(DockerImageName.parse("apache/kafka:4.1.0"));
+	}
 }
