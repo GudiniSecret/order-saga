@@ -6,6 +6,7 @@ import io.github.antonxnotna.order.dto.CreateOrderRequest;
 import io.github.antonxnotna.order.dto.OrderItemRequest;
 import io.github.antonxnotna.order.dto.OrderResponse;
 import io.github.antonxnotna.order.exception.OrderNotFoundException;
+import io.github.antonxnotna.order.messaging.OrderEventPublisher;
 import io.github.antonxnotna.order.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,11 +37,14 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private OrderEventPublisher eventPublisher;
+
     private OrderService orderService;
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderService(orderRepository, Clock.fixed(NOW, ZoneOffset.UTC));
+        orderService = new OrderService(orderRepository, eventPublisher, Clock.fixed(NOW, ZoneOffset.UTC));
     }
 
     @Test
@@ -63,6 +67,7 @@ class OrderServiceTest {
         assertThat(saved.getCreatedAt()).isEqualTo(NOW);
         assertThat(saved.getTotalAmount()).isEqualByComparingTo("250.00");
         assertThat(response.items()).hasSize(2);
+        verify(eventPublisher).publishOrderCreated(saved);
     }
 
     @Test
