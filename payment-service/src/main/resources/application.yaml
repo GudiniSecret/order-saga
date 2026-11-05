@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: payment-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: payment-service # все экземпляры payment-service делят партиции между собой
+      auto-offset-reset: earliest # новая группа читает топик с начала, а не только новые сообщения
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+server:
+  port: 8081 # 8080 - order-service
+
+management:
+  endpoint:
+    health:
+      show-details: always
