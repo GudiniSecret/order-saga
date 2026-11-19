@@ -40,7 +40,7 @@ public class OrderService {
         return OrderResponse.from(saved);
     }
 
-    @Transactional
+    @Transactional (readOnly = true)
     public OrderResponse getOrder(UUID orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
