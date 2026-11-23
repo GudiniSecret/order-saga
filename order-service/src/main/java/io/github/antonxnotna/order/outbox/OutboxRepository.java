@@ -21,7 +21,7 @@ public class OutboxRepository {
                 VALUES (:id, :aggregateId, :topic, CAST(:payload AS jsonb))
                 """
         ).param("id", message.id())
-                .param("aggregateId", message.aggregate_id())
+                .param("aggregateId", message.aggregateId())
                 .param("topic", message.topic())
                 .param("payload", message.payload())
                 .update();

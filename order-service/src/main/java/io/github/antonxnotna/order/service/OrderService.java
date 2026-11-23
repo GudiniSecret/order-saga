@@ -33,9 +33,10 @@ public class OrderService {
         for (OrderItemRequest item : request.items()) {
             order.addItem(item.productId(), item.quantity(), item.price());
         }
-        Order saved = orderRepository.save(order);
 
-        // Временно сделаем отправку в Kafka напрямую через транзакцию, потом исправим
+        Order saved = orderRepository.save(order);
+        // Событие пишется в outbox в этой же транзакции
+        // В Kafka его отправит OutboxRelay (at-least-once)
         eventPublisher.publishOrderCreated(saved);
         return OrderResponse.from(saved);
     }

@@ -15,12 +15,19 @@ spring:
     hibernate:
       ddl-auto: validate # validate - Hibernate только проверяет соответствие Java-сущностей с структурой БД
 
+  flyway:
+    validate-migration-naming: true
+
   kafka:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       acks: all # ответ записано только после подтверждения от всех in-sync реплик
+      properties:
+        max.block.ms: 5000         # сколько send() может ждать метаданные брокера
+        request.timeout.ms: 5000   # таймаут одного запроса к брокеру
+        delivery.timeout.ms: 10000 # общий лимит на доставку с ретраями, после него future завершается ошибкой
 
 # Мониторинг и метрики
 management:

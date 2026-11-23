@@ -47,7 +47,7 @@ class OutboxRepositoryTest {
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(loaded.aggregate_id()).isEqualTo(orderId);
+        assertThat(loaded.aggregateId()).isEqualTo(orderId);
         assertThat(loaded.topic()).isEqualTo("order.events");
         assertThat(loaded.payload()).contains("\"test\"");
 
